@@ -1,3 +1,4 @@
+
 library(readr)
 library(dplyr)
 library(sqldf)
@@ -51,13 +52,13 @@ Venezuela$Inflation_Rate <- as.numeric(as.character(Venezuela$Inflation_Rate))
 #######
 
 ggplot(Venezuela, aes(Year, Inflation_Rate, group=1))+
-  geom_line()+
-  ylim(0,1200)+
+  geom_line(color='red',size=1.5)+
+  geom_point(size=2)+
+  ylim(0,max(Venezuela$Inflation_Rate))+
   ylab("Percent Inflation")+
   theme(panel.background = element_blank())+
   theme(panel.grid.major.y = element_line(color = 'grey'))+
   ggtitle("Venezuelan Inflation", subtitle = "Source: World Bank")+
   theme(plot.title = element_text(hjust = 0.5))+
   theme(plot.subtitle = element_text(hjust = 0.5))
-
 
