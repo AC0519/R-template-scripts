@@ -1,0 +1,19 @@
+In the YAML header of your R Markdown document, replace this line:
+output: html_document
+
+with these lines (the indenting matters - two spaces and four spaces):
+
+output:
+  html_document:
+    code_folding: hide
+
+This change will allow your report to read like a typical document while still having the code available to
+the reader should he or she want to see how you did your analysis and produced your figures.
+
+___________________________
+
+You will also want to replace the default setup chunk with this one:
+
+knitr::opts_chunk$se(echo=TRUE,message=FALSE,warning=FALSE,quiet=TRUE,progress=FALSE,fig.align='center')
+
+The chunk above ensuresyou don’t have undesired outputs appearing in your report (e.g., package loading messages, etc.).

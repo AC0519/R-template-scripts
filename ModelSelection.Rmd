@@ -1,0 +1,86 @@
+---
+title: "Model Selection"
+output:
+  html_document:
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE,message=FALSE,warning=FALSE,quiet=TRUE,progress=FALSE,fig.align='center')
+```
+
+Model Selection in R
+
+```{r}
+library(ISLR)
+summary(Hitters)
+```
+
+There are 59 missing salary values so we will remove these rows before proceeding.
+
+```{r}
+Hitters <- na.omit(Hitters)
+with(Hitters, sum(is.na(Salary)))
+```
+
+
+Best Subset Selection:
+
+Looks through all possible regression models of all different subset sizes and looks for the best of each size. This produces a sequence of models which is the best sunset for each particular size.
+
+
+```{r}
+library(leaps)
+regfit.full <-  regsubsets(Salary ~ . , data = Hitters)
+summary(regfit.full)
+```
+
+
+By default the above code will only give us subsets up to size 8.  Let's increase this to 19, or all of the variables.
+
+```{r}
+regfit.full <- regsubsets(Salary ~ . , data = Hitters, nvmax = 19)
+reg.summary <- summary(regfit.full)
+names(reg.summary)
+plot(reg.summary$cp, xlab = "Number of Variables", ylab = "Cp")
+which.min(reg.summary$cp)
+points(10, reg.summary$cp[10], pch = 20, col = "red")
+```
+
+We can plot the above in a different method to show us which has the lowest Cp and which variables that this includes.  
+
+In the first plot Black squares are included variables and white ones are not.
+
+In the coefficient method will show us which variables and their coefficients are inclueded in our ten variable model.
+
+```{r}
+plot(regfit.full, scale = "Cp")
+coef(regfit.full, 10)
+```
+
+
+Forward Stepwise Selection;
+
+Forward Stepwise is a greedy algorithm.  It begins with a model containing no predictors and then adds predictors to the model one at a time.  In particular, at each step, it adds the vaiable that adds the greatest additional improvement to the model.  It does not consider all possible models as best subset does. 
+```{r}
+regfit.fwd <-  regsubsets(Salary ~ ., data = Hitters, nvmax = 19, method = "forward")
+summary(regfit.fwd)
+plot(regfit.fwd, scale = "Cp")
+```
+
+
+Model selection Using a Validation Set
+
+Lets make a training and validation set, so that we can choose a good subset model.
+
+
+
+
+
+
+
+
+
+
+
+
